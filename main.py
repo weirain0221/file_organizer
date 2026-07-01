@@ -71,9 +71,23 @@ def scan_and_move():
             # The destination path of the file
             dest_file_path = os.path.join(dest_folder, item)
 
+            #Solve the same file more than one 
+            final_item_name = item #item is the file now scanning
+            counter = 1
+
+            while os.path.exists(dest_file_path):
+                final_item_name = f"{name}_{counter}{ext}"
+                dest_file_path = os.path.join(dest_folder, final_item_name)
+                counter += 1
+
             # Move the file
             shutil.move(full_path, dest_file_path)
-            print(f"🚚 {item} -> move to {folder_name}\n")
+            
+            #Check whether rename
+            if final_item_name != item:
+                print(f"🔄 重名衝突！{item} -> 自動改名為 {final_item_name} 並搬移\n")
+            else:
+                print(f"🚚 {item} -> move to {folder_name}\n")
         
         else:
             print(f"{item} will at same position\n")
